@@ -351,17 +351,17 @@ main (int argc, char *argv[])
     GUIDB_MESSAGE(DB_MAIN, ": ui_directory is '%s'\n", ui_directory);
 
     /* initialize Lua */
-    L = lua_open(); 
+    L = luaL_newstate(); 
     luaL_openlibs(L);
     luaopen_ygtk(L);
     /* register C functions */
-    lua_pushvalue(L, LUA_GLOBALSINDEX);
-    luaL_register(L, NULL, main_lib);            /* -- _G */
+    lua_pushglobaltable(L);
+    luaL_setfuncs(L, main_lib, 0);               /* -- _G */
     for (i = 0; main_enums[i].name != NULL; i++) {
 	lua_pushinteger(L, main_enums[i].value);
 	lua_setfield(L, -2, main_enums[i].name); /* -- _G */
     }
-    luaL_register(L, NULL, plugin_gui_lib);      /* -- _G */
+    luaL_setfuncs(L, plugin_gui_lib, 0);         /* -- _G */
     for (i = 0; plugin_gui_enums[i].name != NULL; i++) {
 	lua_pushinteger(L, plugin_gui_enums[i].value);
 	lua_setfield(L, -2, plugin_gui_enums[i].name); /* -- _G */
