@@ -5,7 +5,7 @@
 import sys
 
 APPNAME='sfxr-dssi'
-VERSION='20120407' # !FIX!
+VERSION='20121103' # !FIX!
 
 top = '.'
 out = 'build'
@@ -16,7 +16,7 @@ def options(opt):
 def configure(conf):
     conf.load('compiler_c')
     conf.check_cfg(package='gtk+-2.0', atleast_version='2.4.0', mandatory = True)
-    conf.check_cfg(package='libwhygui', uselib_store='WHYGUI', atleast_version='0.0.5', # !FIX! version
+    conf.check_cfg(package='libwhygui', uselib_store='WHYGUI', atleast_version='20121103',
                    mandatory = True, args = '--cflags --libs')
     conf.check_cfg(package='liblo', uselib_store='LO', atleast_version='0.23',
                    mandatory = True, args = '--cflags --libs')
