@@ -1,16 +1,152 @@
-Licensing:
-- sfxr-dssi code and images: MIT
-- common code: MIT
-- sfxr-dssi is MIT because the original sfxr was.
+                              sfxr-dssi
+                              =========
+                   The famous sound effect generator
+                          as a DSSI plugin
 
--- Portions of this file come from the SDL version of sfxr,
--- copyright (c) 2007 Tomas Pettersson. - MIT
+Introduction
+============
+sfxr-dssi is a simple conversion of the sfxr sound effect generator
+written by DrPetter (Tomas Pattersson), from a stand-alone SDL
+program to a DSSI plugin.  The conversion was done as a development
+milestone for libwhy.  The original sfxr-sdl-1.1.tar.gz used in this
+conversion can be found at:
 
-!FIX!
-sfxr-sdl game sound generator
-    http://code.google.com/p/sfxr/
-    http://sfxr.googlecode.com/files/sfxr-sdl-1.1.tar.gz
-    http://cvs.fedoraproject.org/repo/pkgs/sfxr/sfxr-sdl-1.1.tar.gz/ccb59113cd72b53d98fe0a470b6c3267/sfxr-sdl-1.1.tar.gz
+    https://code.google.com/p/sfxr/
+
+More information about the DSSI software synthesis plugin API can be
+found here:
+
+    http://dssi.sourceforge.net/
+
+More information about the libwhy Lua/GTK+ GUI application
+development library is here:
+
+    http://smbolton.com/lua.html#libwhy
+
+sfxr-dssi is written and copyright (c) 2012 by Sean Bolton, and
+licensed under the same MIT/Expat-style license as the original
+sfxr-sdl 1.1 code (which was written and copyright (c) 2007 by Tomas
+Pettersson).  See the bottom of this file for the license text.
+
+If you enjoy using this plugin, or otherwise find it useful, please
+send me (Sean) any of the following:
+
+    - an email stating where you're from and how you're using
+        sfxr-dssi, sent to <sean@smbolton.com>.
+    - copies of or links to music, software or other art you've
+        created with sfxr-dssi.
+    - suggestions for improving sfxr-dssi.
+    - offers of paying work writing this sort of code!
+
+Requirements
+============
+To build sfxr-dssi, you need:
+
+    - a version of Python suitable to run the included waf build
+        tool; see http://code.google.com/p/waf/ for more information.
+
+    - DSSI version 0.9 or greater, available from the
+        dssi.sourceforge.net address above.
+
+    - the LADSPA v1.x SDK.
+
+    - the ALSA headers (DSSI plugins use ALSA structures, but not
+        the actual drivers, so you don't necessarily need the
+        drivers installed.)  Users of non-Linux systems can use
+        libdssialsacompat, available at:
+
+        http://smbolton.com/linux.html
+
+    - liblo version 0.12 or later (0.23 or later recommended), a
+        library implementing the Open Sound Control (OSC) protocol,
+        available at:
+
+        http://liblo.sourceforge.net/
+
+    - GTK+ version 2.4 or later (sfxr-dssi has not been tested with
+        any GTK+ 3.x version.)
+
+    - libwhy version 20121103 or later, which is available at:
+
+        http://smbolton.com/lua.html#libwhy
+
+    - pkgconfig with PKG_CONFIG_PATH set appropriately to pick up
+        the above packages.
+
+Additionally, to use sfxr-dssi you will need:
+
+    - a working DSSI host.  sfxr-dssi has been tested with
+        jack-dssi-host, available in the DSSI distribution, and with
+        ghostess, available at:
+
+        http://smbolton.com/linux.html
+
+Installation
+============
+On typical POSIX-ish systems, sfxr-dssi can be installed as follows:
+
+1. Unpack the tar file.
+
+2. Make sure PKG_CONFIG_PATH is set correctly to locate the
+    pkgconfig files for DSSI, ALSA, liblo, GTK+ and libwhy.  On many
+    systems, this will be:
+
+    $ PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+    $ export PKG_CONFIG_PATH
+
+3. 'cd' into the package directory and execute './waf configure'.
+    Run './waf --help' to see the available configuration options.
+
+5. Do './waf build'.  Hopefully it should build without warnings (or
+    errors.)
+
+6. './waf install' will install the following:
+
+    <prefix>/lib/dssi/sfxr-dssi.so
+    <prefix>/lib/dssi/sfxr-dssi/about.png
+    <prefix>/lib/dssi/sfxr-dssi/about_icon.png
+    <prefix>/lib/dssi/sfxr-dssi/buttons.png
+    <prefix>/lib/dssi/sfxr-dssi/gui.lua
+    <prefix>/lib/dssi/sfxr-dssi/panel.png
+    <prefix>/lib/dssi/sfxr-dssi/sfxr-dssi_gtk
+    <prefix>/lib/dssi/sfxr-dssi/slider.png
+
+Feedback on your experiences building sfxr-dssi is appreciated.
+
+Operation
+=========
+To run the sfxr-dssi plugin under the jack-dssi-host provided in
+the DSSI distribution, I do the following:
+
+1. Start JACK.
+
+2. Start jack-dssi-host, supplying the correct plugin path
+    and filename (substitute <prefix> as appropriate):
+
+    $ DSSI_PATH=<prefix>/lib/dssi sudo jack-dssi-host sfxr-dssi.so
+
+    jack-dssi-host should start, and moments later the sfxr-dssi
+    graphic user interface should appear.
+
+3. Use aconnect or kaconnect to connect jack-dssi-host to a MIDI
+   source, such as vkeybd.
+
+4. Begin playing sounds!  If you get no response, try clicking the
+    'Play' button in the sfxr-dssi GUI. This sends a note directly
+    via the host to the plugin, so if you hear sound now, look for a
+    problem between the example host and your MIDI source.  If you
+    still don't hear sound, I'd look for a problem between the
+    example host and your output device.
+
+sfxr-dssi is a very straightforward translation of the original
+sfxr-sdl 1.1 code, except that the patch and WAV file saving
+functions ahve been omitted.  Like the original sfxr-sdl, sfxr-dssi
+assumes a sample rate of 44100Hz -- it will work at other sample
+rates, but the sounds produced will be shifted in pitch.
+
+What follows here is the contents of the README.txt from the
+original sfxr-sdl 1.1 distribution.
+
 -----------------------------
 sfxr - sound effect generator
 -----------------------------
