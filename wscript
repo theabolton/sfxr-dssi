@@ -5,7 +5,7 @@
 import sys
 
 APPNAME='sfxr-dssi'
-VERSION='20121103' # !FIX!
+VERSION='20121120'
 
 top = '.'
 out = 'build'
