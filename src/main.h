@@ -27,7 +27,7 @@
 
 #include "sfxr.h"
 
-void PlaySample(sfxr_instance_t *i);
+void PlaySample(sfxr_instance_t *i, unsigned char key);
 void SynthSample(sfxr_instance_t *si, int length, float* buffer);
 
 #endif /* _MAIN_H */

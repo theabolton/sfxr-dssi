@@ -161,7 +161,7 @@ sfxr_handle_event(sfxr_instance_t *instance, snd_seq_event_t *event)
     DEBUG_MESSAGE(DB_DSSI, " sfxr_handle_event called with event type %d\n", event->type);
 
     if (event->type == SND_SEQ_EVENT_NOTEON)
-        PlaySample(instance);
+        PlaySample(instance, event->data.note.note);
 }
 
 /*

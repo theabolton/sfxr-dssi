@@ -52,12 +52,20 @@ float master_vol=0.05f;
 void ResetSample(sfxr_instance_t *si, bool restart)
 {
         int i;
+	double freqtmp;
+	double freqscale = pow(2.0, (double)(si->key - 60) / 12.0);
 
 	if(!restart)
 		si->phase=0;
-	si->fperiod=100.0/(p(p_base_freq)*p(p_base_freq)+0.001);
+	freqtmp = (p(p_base_freq)*p(p_base_freq)+0.001) * freqscale;
+	if (freqtmp < 0.0) freqtmp = 0.0;
+	else if (freqtmp > 1.0) freqtmp = 1.0;
+	si->fperiod=100.0/freqtmp;
 	si->period=(int)si->fperiod;
-	si->fmaxperiod=100.0/(p(p_freq_limit)*p(p_freq_limit)+0.001);
+	freqtmp = (p(p_freq_limit)*p(p_freq_limit)+0.001) * freqscale;
+	if (freqtmp < 0.0) freqtmp = 0.0;
+	else if (freqtmp > 1.0) freqtmp = 1.0;
+	si->fmaxperiod=100.0/freqtmp;
 	si->fslide=1.0-pow((double)p(p_freq_ramp), 3.0)*0.01;
 	si->fdslide=-pow((double)p(p_freq_dramp), 3.0)*0.000001;
 	si->square_duty=0.5f-p(p_duty)*0.5f;
@@ -113,8 +121,9 @@ void ResetSample(sfxr_instance_t *si, bool restart)
 	}
 }
 
-void PlaySample(sfxr_instance_t *si)
+void PlaySample(sfxr_instance_t *si, unsigned char key)
 {
+	si->key = key;
 	ResetSample(si, false);
 	si->playing_sample=true;
 }

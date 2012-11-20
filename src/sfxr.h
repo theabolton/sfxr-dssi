@@ -69,6 +69,8 @@ struct _sfxr_instance_t
     // bool filter_on;     - not used
     // float p_vib_delay;  - not used
 
+    unsigned char key;
+
     int playing_sample;
     int phase;
     double fperiod;
